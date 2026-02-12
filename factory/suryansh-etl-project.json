@@ -1,0 +1,9 @@
+{
+	"name": "suryansh-etl-project",
+	"location": "centralindia",
+	"identity": {
+		"type": "SystemAssigned",
+		"principalId": "89d86abf-48d1-422f-aae7-08cadbfdbb1b",
+		"tenantId": "0887fcaa-8c9f-45e8-9880-41333202ebee"
+	}
+}

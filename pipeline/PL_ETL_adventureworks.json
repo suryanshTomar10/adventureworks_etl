@@ -1,0 +1,223 @@
+{
+	"name": "PL_ETL_adventureworks",
+	"properties": {
+		"activities": [
+			{
+				"name": "PL_transform",
+				"type": "ExecutePipeline",
+				"dependsOn": [
+					{
+						"activity": "SetStartTime",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"policy": {
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"pipeline": {
+						"referenceName": "PL_transform",
+						"type": "PipelineReference"
+					},
+					"waitOnCompletion": true
+				}
+			},
+			{
+				"name": "ScriptFail",
+				"type": "Script",
+				"dependsOn": [
+					{
+						"activity": "PL_transform",
+						"dependencyConditions": [
+							"Failed"
+						]
+					}
+				],
+				"policy": {
+					"timeout": "0.12:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"linkedServiceName": {
+					"referenceName": "ls_adventureworks_soure_data",
+					"type": "LinkedServiceReference",
+					"parameters": {
+						"dbName": "ETL_project"
+					}
+				},
+				"typeProperties": {
+					"scripts": [
+						{
+							"type": "NonQuery",
+							"text": {
+								"value": "insert into ETL_project.dbo.Pipeline_Run values ('@{pipeline().RunId}','@{pipeline().Pipeline}','Failed','@{formatDateTime(convertTimeZone(pipeline().TriggerTime,'UTC','India Standard Time'),'yyyy-MM-dd HH:mm:ss')}')",
+								"type": "Expression"
+							}
+						}
+					],
+					"scriptBlockExecutionTimeout": "02:00:00"
+				}
+			},
+			{
+				"name": "SetEndTime",
+				"type": "SetVariable",
+				"dependsOn": [
+					{
+						"activity": "PL_transform",
+						"dependencyConditions": [
+							"Completed"
+						]
+					}
+				],
+				"policy": {
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"variableName": "End_Time",
+					"value": {
+						"value": "@utcNow()",
+						"type": "Expression"
+					}
+				}
+			},
+			{
+				"name": "Insert_Script",
+				"type": "Script",
+				"dependsOn": [
+					{
+						"activity": "SetEndTime",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"policy": {
+					"timeout": "0.12:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"linkedServiceName": {
+					"referenceName": "ls_adventureworks_soure_data",
+					"type": "LinkedServiceReference",
+					"parameters": {
+						"dbName": "ETL_project"
+					}
+				},
+				"typeProperties": {
+					"scripts": [
+						{
+							"type": "NonQuery",
+							"text": {
+								"value": "insert into ETL_project.dbo.Activity_Details values ('@{pipeline().DataFactory}','@{pipeline().Pipeline}','@{pipeline().TriggerName}','@{formatDateTime(convertTimeZone(pipeline().TriggerTime,'UTC','India Standard Time'),'yyyy-MM-dd HH:mm:ss')}');\n\n\ninsert into ETL_project.dbo.Pipeline_Log values ('@{pipeline().RunId}','@{pipeline().Pipeline}','@{pipeline().TriggerType}','@{formatDateTime(convertTimeZone(variables('Start_Time'),'UTC','India Standard Time'),'yyyy-MM-dd HH:mm:ss')}','@{formatDateTime(convertTimeZone(variables('End_Time'),'UTC','India Standard Time'),'yyyy-MM-dd HH:mm:ss')}',datediff(second,'@{variables('Start_Time')}','@{variables('End_Time')}'));",
+								"type": "Expression"
+							}
+						}
+					],
+					"scriptBlockExecutionTimeout": "02:00:00"
+				}
+			},
+			{
+				"name": "SetEndTime_copy1",
+				"type": "SetVariable",
+				"dependsOn": [
+					{
+						"activity": "PL_transform",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"policy": {
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"variableName": "End_Time",
+					"value": {
+						"value": "@utcNow()",
+						"type": "Expression"
+					}
+				}
+			},
+			{
+				"name": "ScriptSuccess",
+				"type": "Script",
+				"dependsOn": [
+					{
+						"activity": "SetEndTime_copy1",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"policy": {
+					"timeout": "0.12:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"linkedServiceName": {
+					"referenceName": "ls_adventureworks_soure_data",
+					"type": "LinkedServiceReference",
+					"parameters": {
+						"dbName": "ETL_project"
+					}
+				},
+				"typeProperties": {
+					"scripts": [
+						{
+							"type": "NonQuery",
+							"text": {
+								"value": "insert into ETL_project.dbo.Pipeline_Run values ('@{pipeline().RunId}','@{pipeline().Pipeline}','Success','@{formatDateTime(convertTimeZone(pipeline().TriggerTime,'UTC','India Standard Time'),'yyyy-MM-dd HH:mm:ss')}')",
+								"type": "Expression"
+							}
+						}
+					],
+					"scriptBlockExecutionTimeout": "02:00:00"
+				}
+			},
+			{
+				"name": "SetStartTime",
+				"type": "SetVariable",
+				"dependsOn": [],
+				"policy": {
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"variableName": "Start_Time",
+					"value": {
+						"value": "@utcNow()",
+						"type": "Expression"
+					}
+				}
+			}
+		],
+		"variables": {
+			"Start_Time": {
+				"type": "String"
+			},
+			"End_Time": {
+				"type": "String"
+			}
+		},
+		"annotations": [],
+		"lastPublishTime": "2026-02-12T09:09:30Z"
+	},
+	"type": "Microsoft.DataFactory/factories/pipelines"
+}

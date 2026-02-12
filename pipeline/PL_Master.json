@@ -1,0 +1,88 @@
+{
+	"name": "PL_Master",
+	"properties": {
+		"activities": [
+			{
+				"name": "PL_ETL_adventureworks",
+				"type": "ExecutePipeline",
+				"dependsOn": [],
+				"policy": {
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"pipeline": {
+						"referenceName": "PL_ETL_adventureworks",
+						"type": "PipelineReference"
+					},
+					"waitOnCompletion": true
+				}
+			},
+			{
+				"name": "EmailAlertFail",
+				"type": "WebActivity",
+				"dependsOn": [
+					{
+						"activity": "PL_ETL_adventureworks",
+						"dependencyConditions": [
+							"Failed"
+						]
+					}
+				],
+				"policy": {
+					"timeout": "0.12:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"method": "POST",
+					"headers": {
+						"Content-Type": "application/json"
+					},
+					"url": "https://prod-30.centralindia.logic.azure.com:443/workflows/93f6076aa8864fa5953589d629f38795/triggers/When_an_HTTP_request_is_received/paths/invoke?api-version=2016-10-01&sp=%2Ftriggers%2FWhen_an_HTTP_request_is_received%2Frun&sv=1.0&sig=UUaoa5T5EXbys0S_s5st1iVEEy00hf47HEH5xZj7uH8",
+					"body": {
+						"value": "{\n    \"Pipeline\":\"@{pipeline().Pipeline}\",\n    \"Status\":\"Failed\",\n    \"DataFactoryName\":\"@{pipeline().DataFactory}\",\n    \"RunID\":\"@{pipeline().RunId}\"\n}",
+						"type": "Expression"
+					}
+				}
+			},
+			{
+				"name": "EmailAlertSuccess",
+				"type": "WebActivity",
+				"dependsOn": [
+					{
+						"activity": "PL_ETL_adventureworks",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"policy": {
+					"timeout": "0.12:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"method": "POST",
+					"headers": {
+						"Content-Type": "application/json"
+					},
+					"url": "https://prod-30.centralindia.logic.azure.com:443/workflows/93f6076aa8864fa5953589d629f38795/triggers/When_an_HTTP_request_is_received/paths/invoke?api-version=2016-10-01&sp=%2Ftriggers%2FWhen_an_HTTP_request_is_received%2Frun&sv=1.0&sig=UUaoa5T5EXbys0S_s5st1iVEEy00hf47HEH5xZj7uH8",
+					"body": {
+						"value": "{\n    \"Pipeline\":\"@{pipeline().Pipeline}\",\n    \"Status\":\"Success\",\n    \"DataFactoryName\":\"@{pipeline().DataFactory}\",\n    \"RunID\":\"@{pipeline().RunId}\"\n}",
+						"type": "Expression"
+					}
+				}
+			}
+		],
+		"annotations": [],
+		"lastPublishTime": "2026-02-12T09:44:13Z"
+	},
+	"type": "Microsoft.DataFactory/factories/pipelines"
+}
