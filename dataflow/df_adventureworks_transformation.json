@@ -1,5 +1,5 @@
 {
-	"name": "dataflow1",
+	"name": "df_adventureworks_transformation",
 	"properties": {
 		"type": "MappingDataFlow",
 		"typeProperties": {

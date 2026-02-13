@@ -39,7 +39,7 @@
 				"userProperties": [],
 				"typeProperties": {
 					"dataflow": {
-						"referenceName": "dataflow1",
+						"referenceName": "df_adventureworks_transformation",
 						"type": "DataFlowReference"
 					},
 					"compute": {
