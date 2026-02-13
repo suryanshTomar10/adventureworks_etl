@@ -39,7 +39,7 @@
 						"referenceName": "ds_target_parquet",
 						"type": "DatasetReference"
 					},
-					"name": "sink1",
+					"name": "ProductPerformance",
 					"rejectedDataLinkedService": {
 						"referenceName": "ls_AzureDataLakeStorage",
 						"type": "LinkedServiceReference"
@@ -50,49 +50,49 @@
 						"referenceName": "ds_target_parquet",
 						"type": "DatasetReference"
 					},
-					"name": "sink2"
+					"name": "OrderTotal"
 				},
 				{
 					"dataset": {
 						"referenceName": "ds_target_parquet",
 						"type": "DatasetReference"
 					},
-					"name": "sink3"
+					"name": "OrderDetailsExt"
 				},
 				{
 					"dataset": {
 						"referenceName": "ds_target_parquet",
 						"type": "DatasetReference"
 					},
-					"name": "sink4"
+					"name": "CustomerOrders"
 				},
 				{
 					"dataset": {
 						"referenceName": "ds_target_parquet",
 						"type": "DatasetReference"
 					},
-					"name": "sink5"
+					"name": "HighMarginProducts"
 				},
 				{
 					"dataset": {
 						"referenceName": "ds_target_parquet",
 						"type": "DatasetReference"
 					},
-					"name": "sink6"
+					"name": "LowMarginProducts"
 				},
 				{
 					"dataset": {
 						"referenceName": "ds_target_parquet",
 						"type": "DatasetReference"
 					},
-					"name": "sink7"
+					"name": "MediumMarginProducts"
 				},
 				{
 					"dataset": {
 						"referenceName": "ds_target_parquet",
 						"type": "DatasetReference"
 					},
-					"name": "sink8"
+					"name": "SalesPersonRanked"
 				}
 			],
 			"transformations": [
@@ -379,7 +379,7 @@
 				"     skipDuplicateMapInputs: true,",
 				"     skipDuplicateMapOutputs: true,",
 				"     saveOrder: 1,",
-				"     partitionBy('hash', 1)) ~> sink1",
+				"     partitionBy('hash', 1)) ~> ProductPerformance",
 				"aggregate2 sink(allowSchemaDrift: true,",
 				"     validateSchema: false,",
 				"     format: 'parquet',",
@@ -389,7 +389,7 @@
 				"     postCommands: [],",
 				"     skipDuplicateMapInputs: true,",
 				"     skipDuplicateMapOutputs: true,",
-				"     partitionBy('hash', 1)) ~> sink2",
+				"     partitionBy('hash', 1)) ~> OrderTotal",
 				"select2 sink(allowSchemaDrift: true,",
 				"     validateSchema: false,",
 				"     format: 'parquet',",
@@ -399,7 +399,7 @@
 				"     postCommands: [],",
 				"     skipDuplicateMapInputs: true,",
 				"     skipDuplicateMapOutputs: true,",
-				"     partitionBy('hash', 1)) ~> sink3",
+				"     partitionBy('hash', 1)) ~> OrderDetailsExt",
 				"select3 sink(allowSchemaDrift: true,",
 				"     validateSchema: false,",
 				"     format: 'parquet',",
@@ -409,7 +409,7 @@
 				"     postCommands: [],",
 				"     skipDuplicateMapInputs: true,",
 				"     skipDuplicateMapOutputs: true,",
-				"     partitionBy('hash', 1)) ~> sink4",
+				"     partitionBy('hash', 1)) ~> CustomerOrders",
 				"split1@HighMarginProducts sink(allowSchemaDrift: true,",
 				"     validateSchema: false,",
 				"     format: 'parquet',",
@@ -419,7 +419,7 @@
 				"     postCommands: [],",
 				"     skipDuplicateMapInputs: true,",
 				"     skipDuplicateMapOutputs: true,",
-				"     partitionBy('hash', 1)) ~> sink5",
+				"     partitionBy('hash', 1)) ~> HighMarginProducts",
 				"split1@LowMarginProducts sink(allowSchemaDrift: true,",
 				"     validateSchema: false,",
 				"     format: 'parquet',",
@@ -429,7 +429,7 @@
 				"     postCommands: [],",
 				"     skipDuplicateMapInputs: true,",
 				"     skipDuplicateMapOutputs: true,",
-				"     partitionBy('hash', 1)) ~> sink6",
+				"     partitionBy('hash', 1)) ~> LowMarginProducts",
 				"split1@MediumMarginProducts sink(allowSchemaDrift: true,",
 				"     validateSchema: false,",
 				"     format: 'parquet',",
@@ -439,7 +439,7 @@
 				"     postCommands: [],",
 				"     skipDuplicateMapInputs: true,",
 				"     skipDuplicateMapOutputs: true,",
-				"     partitionBy('hash', 1)) ~> sink7",
+				"     partitionBy('hash', 1)) ~> MediumMarginProducts",
 				"sort2 sink(allowSchemaDrift: true,",
 				"     validateSchema: false,",
 				"     format: 'parquet',",
@@ -449,7 +449,7 @@
 				"     postCommands: [],",
 				"     skipDuplicateMapInputs: true,",
 				"     skipDuplicateMapOutputs: true,",
-				"     partitionBy('hash', 1)) ~> sink8"
+				"     partitionBy('hash', 1)) ~> SalesPersonRanked"
 			]
 		}
 	}
