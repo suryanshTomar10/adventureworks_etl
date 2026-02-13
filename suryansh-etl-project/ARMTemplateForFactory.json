@@ -605,7 +605,7 @@
 						},
 						"userProperties": [],
 						"typeProperties": {
-							"notebookPath": "/Users/suryansh.tomar.10@outlook.com/mount-adls"
+							"notebookPath": "/Users/suryansh.tomar.10@outlook.com/nb_ingest_finalData"
 						},
 						"linkedServiceName": {
 							"referenceName": "ls_adb",
