@@ -1,0 +1,98 @@
+{
+	"$schema": "http://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+	"contentVersion": "1.0.0.0",
+	"parameters": {
+		"factoryName": {
+			"type": "string",
+			"metadata": "Data Factory name",
+			"defaultValue": "suryansh-etl-project"
+		},
+		"ls_AzureDataLakeStorage_accountKey": {
+			"type": "secureString",
+			"metadata": "Secure string for 'accountKey' of 'ls_AzureDataLakeStorage'"
+		},
+		"ls_adb_accessToken": {
+			"type": "secureString",
+			"metadata": "Secure string for 'accessToken' of 'ls_adb'"
+		},
+		"ls_adventureworks_soure_data_password": {
+			"type": "secureString",
+			"metadata": "Secure string for 'password' of 'ls_adventureworks_soure_data'"
+		},
+		"ls_AzureDataLakeStorage_properties_typeProperties_url": {
+			"type": "string",
+			"defaultValue": "https://suryanshetlproject.dfs.core.windows.net/"
+		},
+		"ls_adb_properties_typeProperties_existingClusterId": {
+			"type": "string",
+			"defaultValue": "0210-053906-3lmxifmj"
+		},
+		"ls_adventureworks_soure_data_properties_typeProperties_server": {
+			"type": "string",
+			"defaultValue": "TOMAR\\SQLEXPRESS"
+		},
+		"ls_adventureworks_soure_data_properties_typeProperties_database": {
+			"type": "string",
+			"defaultValue": "@{linkedService().dbName}"
+		},
+		"ls_adventureworks_soure_data_properties_typeProperties_userName": {
+			"type": "string",
+			"defaultValue": "sa"
+		},
+		"containerUri": {
+			"type": "string",
+			"metadata": "URI to storage account containing linked ARM templates"
+		},
+		"containerSasToken": {
+			"type": "string",
+			"metadata": "Sas token to storage account containing linked ARM templates"
+		}
+	},
+	"variables": {
+		"factoryId": "[concat('Microsoft.DataFactory/factories/', parameters('factoryName'))]"
+	},
+	"resources": [
+		{
+			"name": "suryansh-etl-project_ArmTemplate_0",
+			"type": "Microsoft.Resources/deployments",
+			"apiVersion": "2024-03-01",
+			"properties": {
+				"mode": "incremental",
+				"templateLink": {
+					"uri": "[concat(parameters('containerUri'), '/ArmTemplate_0.json', parameters('containerSasToken'))]",
+					"contentVersion": "1.0.0.0"
+				},
+				"parameters": {
+					"factoryName": {
+						"value": "[parameters('factoryName')]"
+					},
+					"ls_AzureDataLakeStorage_accountKey": {
+						"value": "[parameters('ls_AzureDataLakeStorage_accountKey')]"
+					},
+					"ls_adb_accessToken": {
+						"value": "[parameters('ls_adb_accessToken')]"
+					},
+					"ls_adventureworks_soure_data_password": {
+						"value": "[parameters('ls_adventureworks_soure_data_password')]"
+					},
+					"ls_AzureDataLakeStorage_properties_typeProperties_url": {
+						"value": "[parameters('ls_AzureDataLakeStorage_properties_typeProperties_url')]"
+					},
+					"ls_adb_properties_typeProperties_existingClusterId": {
+						"value": "[parameters('ls_adb_properties_typeProperties_existingClusterId')]"
+					},
+					"ls_adventureworks_soure_data_properties_typeProperties_server": {
+						"value": "[parameters('ls_adventureworks_soure_data_properties_typeProperties_server')]"
+					},
+					"ls_adventureworks_soure_data_properties_typeProperties_database": {
+						"value": "[parameters('ls_adventureworks_soure_data_properties_typeProperties_database')]"
+					},
+					"ls_adventureworks_soure_data_properties_typeProperties_userName": {
+						"value": "[parameters('ls_adventureworks_soure_data_properties_typeProperties_userName')]"
+					}
+				}
+			},
+			"dependsOn": []
+		}
+	]
+}

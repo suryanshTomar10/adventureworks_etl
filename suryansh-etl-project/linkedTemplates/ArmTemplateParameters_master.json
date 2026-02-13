@@ -1,0 +1,39 @@
+{
+	"$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentParameters.json#",
+	"contentVersion": "1.0.0.0",
+	"parameters": {
+		"factoryName": {
+			"value": "suryansh-etl-project"
+		},
+		"ls_AzureDataLakeStorage_accountKey": {
+			"value": ""
+		},
+		"ls_adb_accessToken": {
+			"value": ""
+		},
+		"ls_adventureworks_soure_data_password": {
+			"value": ""
+		},
+		"ls_AzureDataLakeStorage_properties_typeProperties_url": {
+			"value": "https://suryanshetlproject.dfs.core.windows.net/"
+		},
+		"ls_adb_properties_typeProperties_existingClusterId": {
+			"value": "0210-053906-3lmxifmj"
+		},
+		"ls_adventureworks_soure_data_properties_typeProperties_server": {
+			"value": "TOMAR\\SQLEXPRESS"
+		},
+		"ls_adventureworks_soure_data_properties_typeProperties_database": {
+			"value": "@{linkedService().dbName}"
+		},
+		"ls_adventureworks_soure_data_properties_typeProperties_userName": {
+			"value": "sa"
+		},
+		"containerUri": {
+			"value": ""
+		},
+		"containerSasToken": {
+			"value": ""
+		}
+	}
+}
